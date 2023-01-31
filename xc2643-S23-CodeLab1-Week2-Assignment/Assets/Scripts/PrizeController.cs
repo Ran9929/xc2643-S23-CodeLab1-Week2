@@ -27,5 +27,6 @@ public class PrizeController : MonoBehaviour
     {
         Destroy(gameObject);
         GameManager.Instance.score++;
+        PlayerController.Instance.Grow();
     }
 }

@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     private Collider2D m_Collider2D;
     private Vector2 m_Size;
     public float moveSpeed = 5f;
-    public float growSpeed = 1.01f;
+    public float growSpeed = 1.1f;
     private void Awake()
     {
         if (Instance == null)
