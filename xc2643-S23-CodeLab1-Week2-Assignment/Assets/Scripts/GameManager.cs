@@ -40,11 +40,6 @@ public class GameManager : MonoBehaviour
             currentLevel++;
             targetScore *= 2;
             SceneManager.LoadScene(currentLevel);
-            /*for (int i = 0; i < targetScore; i++)
-            {
-                Vector3 position = new Vector2(Random.Range(-3f, 3f), Random.Range(-3f, 3f));
-                GameObject prize = Instantiate(prizePrefab, position, quaternion.identity);
-            }*/
         }
     }
 }

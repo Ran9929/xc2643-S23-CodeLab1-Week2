@@ -8,10 +8,12 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance;
     private Rigidbody2D m_Rigidbody2D;
     private Vector2 m_Movement;
-    private Collider2D m_Collider2D;
-    private Vector2 m_Size;
     public float moveSpeed = 5f;
-    public float growSpeed = 1.1f;
+    
+    public GameObject bulletPrefab;
+    public float launchPower = 300.0f;
+    Vector2 lookDirection = new Vector2(1,0);
+    
     private void Awake()
     {
         if (Instance == null)
@@ -28,8 +30,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
-        m_Collider2D = GetComponent<Collider2D>();
-        m_Size = m_Collider2D.bounds.size;
     }
     
     void Update()
@@ -38,6 +38,17 @@ public class PlayerController : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
         m_Movement.Set(horizontal, vertical);
         m_Movement.Normalize();
+        Vector2 move =new Vector2(horizontal, vertical);
+
+        if(!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
+        {
+            lookDirection.Set(move.x, move.y);
+            lookDirection.Normalize();
+        }
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Launch();
+        }
     }
 
     private void FixedUpdate()
@@ -45,11 +56,14 @@ public class PlayerController : MonoBehaviour
         m_Rigidbody2D.AddForce(m_Movement * moveSpeed);
         m_Rigidbody2D.velocity *= 0.99f;
     }
-
-    public void Grow()
+    
+    void Launch()
     {
-        transform.localScale *= growSpeed;
-        m_Size *= growSpeed;
-
+        GameObject projectileObject = Instantiate(
+            bulletPrefab, m_Rigidbody2D.position + Vector2.up * 0.5f, Quaternion.identity
+            );
+        BulletController bc = projectileObject.GetComponent<BulletController>();
+        bc.Launch(lookDirection, launchPower);
     }
+
 }
